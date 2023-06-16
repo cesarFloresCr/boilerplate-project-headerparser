@@ -28,3 +28,30 @@ app.get('/api/hello', function (req, res) {
 var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
+//who am i
+app.get('/api/whoami',function(req,res){
+/*par obtner ip */
+  const axios = require('axios');
+  //para saber que lenguaje tiene el explorador
+  const acceptLanguage = req.headers['accept-language'];
+  //para saber que explorar esta usando el usuario
+  const platform = req.headers['user-agent'];
+
+  /*peticion de ip publica*/
+  axios.get('https://ipapi.co/json/')
+    .then(response => {
+      const publicIP = response.data.ip;
+      res.json({
+        ipaddress: publicIP,
+        language: acceptLanguage,
+        software: platform
+      });
+      console.log(`Tu dirección IP pública es: ${publicIP}`);
+    })
+    .catch(error => {
+      console.log('Error al obtener la dirección IP pública:');
+    });
+
+  
+});
